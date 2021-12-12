@@ -16,7 +16,13 @@ include ':markwon-core',
         ':markwon-recycler-table',
         ':markwon-simple-ext',
         ':markwon-syntax-highlight',
-        ':markwon-test-span'
+        ':markwon-test-span',
+        ':markwon-iframe-ext',
+        ':markwon-emoji',
+        ':markwon-span-ext',
+        ':markwon-ext-inline-latex',
+        ':markwon-ext-inline',
+        ':markwon-round-textview'
 
 include ':app-sample'
 include ':sample-utils:processor'
