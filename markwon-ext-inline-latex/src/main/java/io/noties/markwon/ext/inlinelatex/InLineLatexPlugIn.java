@@ -18,11 +18,13 @@ import ru.noties.jlatexmath.JLatexMathDrawable;
 public class InLineLatexPlugIn extends AbstractMarkwonPlugin {
     private static float mLatextSize;
     private static int mScreenWidth;
+    private static int mLatexColor;
     @NonNull
-    public static InLineLatexPlugIn create(float latexSize, int screenWidth)
+    public static InLineLatexPlugIn create(float latexSize, int latexColor, int screenWidth)
     {
         mLatextSize = latexSize;
         mScreenWidth = screenWidth;
+        mLatexColor = latexColor;
         return new InLineLatexPlugIn();
     }
 
@@ -42,7 +44,6 @@ public class InLineLatexPlugIn extends AbstractMarkwonPlugin {
             @Override
             public void visit(@NonNull MarkwonVisitor visitor, @NonNull InLineLatexNode inLineLinkNode) {
                 final String latex = inLineLinkNode.latex();
-                int latxtColor = Color.BLACK;
                 int backgroundColor = Color.TRANSPARENT;
                 int errorColor = Color.parseColor("#ff3d00");
                 if (!TextUtils.isEmpty(latex)) {
@@ -56,7 +57,7 @@ public class InLineLatexPlugIn extends AbstractMarkwonPlugin {
                             float textWidth = mScreenWidth;
                             final JLatexMathDrawable latexDrawable = JLatexMathDrawable.builder(replaceLatexTag(latex))
                                     .textSize(mLatextSize)
-                                    .color(latxtColor)
+                                    .color(mLatexColor)
                                     .background(backgroundColor)
                                     .fitCanvas(false) // It will fix the truncated issue of inline latex
                                     .build();
@@ -74,7 +75,7 @@ public class InLineLatexPlugIn extends AbstractMarkwonPlugin {
                                     int subTextLen = subText.length();
                                     final JLatexMathDrawable subLatexDrawable = JLatexMathDrawable.builder(replaceLatexTag(subText))
                                             .textSize(mLatextSize)
-                                            .color(latxtColor)
+                                            .color(mLatexColor)
                                             .background(backgroundColor)
                                             .fitCanvas(true) // It will fix the truncated issue of inline latex
                                             .build();
