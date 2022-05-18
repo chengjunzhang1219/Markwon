@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Spanned;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ import io.noties.markwon.image.ImageSpanFactory;
  * @since 4.0.0
  */
 public class GlideImagesPlugin extends AbstractMarkwonPlugin {
+    private static String LOG_TAG = "GlideImagesPlugin";
 
     public interface GlideStore {
 
@@ -57,12 +59,14 @@ public class GlideImagesPlugin extends AbstractMarkwonPlugin {
             @NonNull
             @Override
             public RequestBuilder<Drawable> load(@NonNull AsyncDrawable drawable) {
+                Log.d(LOG_TAG, "LOAD IMAGE" + drawable.getDestination());
                 return Glide.with(getValidContext(context))
                         .load(drawable.getDestination());
             }
 
             @Override
             public RequestBuilder<GifDrawable> loadGif(@NonNull AsyncDrawable drawable) {
+                Log.d(LOG_TAG, "LOAD GIF" + drawable.getDestination());
                 return Glide.with(getValidContext(context))
                         .asGif()
                         .load(drawable.getDestination());
@@ -156,6 +160,7 @@ public class GlideImagesPlugin extends AbstractMarkwonPlugin {
         @Override
         public void load(@NonNull AsyncDrawable drawable) {
             String dest = drawable.getDestination();
+            Log.d(LOG_TAG, "LOAD DATA" + dest);
             if (dest.contains(".gif")){
                 final Target<GifDrawable> targetGif = new AsyncGifDrawableTarget(drawable);
                 if (!cache.containsKey(dest)){
@@ -177,10 +182,10 @@ public class GlideImagesPlugin extends AbstractMarkwonPlugin {
         @Override
         public void cancel(@NonNull AsyncDrawable drawable) {
             String dest = drawable.getDestination();
+            Log.d(LOG_TAG, "LOAD CANCEL" + dest);
             final Target<?> target = cache.get(dest);
             if (target != null) {
                 glideStore.cancel(target);
-                cache.remove(dest);
             }
         }
 
@@ -203,6 +208,7 @@ public class GlideImagesPlugin extends AbstractMarkwonPlugin {
                 String dest = drawable.getDestination();
                 if (cache.get(dest) != null) {
                     if (drawable.isAttached()) {
+                        Log.d(LOG_TAG, "RESOURCE READY " + dest);
                         DrawableUtils.applyIntrinsicBoundsIfEmpty(resource);
                         drawable.setResult(resource);
                     }
@@ -224,10 +230,10 @@ public class GlideImagesPlugin extends AbstractMarkwonPlugin {
                 if (cache.get(dest) != null) {
                     if (errorDrawable != null
                             && drawable.isAttached()) {
+                        Log.d(LOG_TAG, "RESOURCE FAILED " + dest);
                         DrawableUtils.applyIntrinsicBoundsIfEmpty(errorDrawable);
                         drawable.setResult(errorDrawable);
                     }
-                    cache.remove(dest);
                 }
             }
 
@@ -265,10 +271,10 @@ public class GlideImagesPlugin extends AbstractMarkwonPlugin {
                 if (cache.get(dest) != null) {
                     if (errorDrawable != null
                             && drawable.isAttached()) {
+                        Log.d(LOG_TAG, "RESOURCE READY FAILED " + dest);
                         DrawableUtils.applyIntrinsicBoundsIfEmpty(errorDrawable);
                         drawable.setResult(errorDrawable);
                     }
-                    cache.remove(dest);
                 }
             }
 
@@ -277,6 +283,7 @@ public class GlideImagesPlugin extends AbstractMarkwonPlugin {
                 String dest = drawable.getDestination();
                 if (cache.get(dest) != null) {
                     if (drawable.isAttached()) {
+                        Log.d(LOG_TAG, "RESOURCE READY GIF " + dest);
                         DrawableUtils.applyIntrinsicBoundsIfEmpty(resource);
                         drawable.setResult(resource);
                     }
