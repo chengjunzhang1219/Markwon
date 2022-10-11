@@ -628,12 +628,20 @@ public class MarkwonInlineParser implements InlineParser, MarkwonInlineParserCon
             // Remove number of used delimiters from stack and inline nodes.
             opener.length -= useDelims;
             closer.length -= useDelims;
-            openerNode.setLiteral(
-                    openerNode.getLiteral().substring(0,
-                            openerNode.getLiteral().length() - useDelims));
-            closerNode.setLiteral(
-                    closerNode.getLiteral().substring(0,
-                            closerNode.getLiteral().length() - useDelims));
+
+            int openerNodeSubStringIdx = openerNode.getLiteral().length() - useDelims;
+            int closerNodeSubStringIdx = closerNode.getLiteral().length() - useDelims;
+
+            if (openerNode.getLiteral().length() > 0 && openerNodeSubStringIdx >= 0) {
+                openerNode.setLiteral(
+                        openerNode.getLiteral().substring(0,
+                                openerNode.getLiteral().length() - useDelims));
+            }
+            if (closerNode.getLiteral().length() > 0 && closerNodeSubStringIdx >= 0) {
+                closerNode.setLiteral(
+                        closerNode.getLiteral().substring(0,
+                                closerNode.getLiteral().length() - useDelims));
+            }
 
             removeDelimitersBetween(opener, closer);
             // The delimiter processor can re-parent the nodes between opener and closer,
