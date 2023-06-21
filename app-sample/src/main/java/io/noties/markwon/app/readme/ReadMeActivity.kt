@@ -89,7 +89,6 @@ class ReadMeActivity : Activity() {
             .usePlugin(IFramePlugIn.create())
             .usePlugin(GlideImagesPlugin.create(this))
             .usePlugin(EmojiPlugin.create(EmojiSpanProvider.create(this, 36.0f)))
-            .usePlugin(InLineLatexPlugIn.create(46.0f, 1080))
             .usePlugin(MarkwonInlineParserPlugin.create())
             .usePlugin(JLatexMathPlugin.create(46.0f))
             .usePlugin(object : AbstractMarkwonPlugin() {
